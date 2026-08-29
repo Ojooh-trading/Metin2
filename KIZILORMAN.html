@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metin Taşları — Devler Vadisi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050a16;
+    --stone:#0a1526;
+    --panel:#0f1c33;
+    --panel-2:#152943;
+    --line:rgba(205,228,255,.12);
+    --line-strong:rgba(205,228,255,.24);
+    --bone:#eef6ff;
+    --bone-dim:#8ea3c7;
+
+    --gold:#5eead4;
+    --gold-glow:rgba(94,234,212,.35);
+
+    --rose:#c084fc;
+    --rose-glow:rgba(192,132,252,.35);
+
+    --spirit:#60a5fa;
+    --spirit-glow:rgba(96,165,250,.35);
+
+    --danger:#ff5f52;
+    --danger-glow:rgba(255,95,82,.5);
+
+    --snow:#f4faff;
+
+    --font-display:'Cinzel',serif;
+    --font-body:'Spectral',serif;
+    --font-mono:'JetBrains Mono',monospace;
+
+    --radius:14px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(96,165,250,.12), transparent 60%),
+      radial-gradient(ellipse 60% 45% at 90% 110%, rgba(192,132,252,.09), transparent 60%),
+      radial-gradient(ellipse 60% 45% at 5% 100%, rgba(94,234,212,.07), transparent 60%),
+      var(--void);
+    color:var(--bone);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    position:relative;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{ background:var(--gold); color:#100c09; }
+
+  /* ---- snowfall field ---- */
+  .embers{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+  .ember{
+    position:absolute; top:-14px; border-radius:50%;
+    background:var(--snow); box-shadow:0 0 3px 1px rgba(244,250,255,.4);
+    opacity:0; animation:snowfall linear infinite;
+  }
+  @keyframes snowfall{
+    0%{transform:translateY(0) translateX(0); opacity:0;}
+    8%{opacity:.9;}
+    92%{opacity:.75;}
+    100%{transform:translateY(112vh) translateX(var(--drift,20px)); opacity:0;}
+  }
+
+  main{position:relative; z-index:1; max-width:1440px; margin:0 auto; padding:26px 24px 32px;}
+
+  /* ---- header ---- */
+  header{text-align:center; margin-bottom:22px;}
+  .eyebrow{
+    font-family:var(--font-mono); letter-spacing:.38em; text-transform:uppercase;
+    font-size:11px; color:var(--bone-dim); margin:0 0 16px; display:flex; align-items:center;
+    justify-content:center; gap:14px;
+  }
+  .eyebrow::before, .eyebrow::after{content:''; width:26px; height:1px; background:var(--line-strong);}
+  h1{
+    font-family:var(--font-display); font-weight:900; font-size:clamp(28px,4.4vw,44px);
+    margin:0; letter-spacing:.02em; line-height:1.05;
+    background:linear-gradient(180deg,#ffffff 0%, var(--spirit) 55%, #1c3a68 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow:0 2px 30px rgba(96,165,250,.25);
+  }
+  .subhead{font-style:italic; color:var(--bone-dim); font-size:14px; margin-top:8px;}
+
+  .clock-plaque{
+    display:inline-flex; align-items:center; gap:12px; margin-top:14px;
+    padding:8px 22px; border:1px solid var(--line-strong); border-radius:999px;
+    background:linear-gradient(180deg, var(--panel-2), var(--panel));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 0 24px rgba(96,165,250,.12);
+  }
+  .clock-plaque .lbl{font-family:var(--font-mono); font-size:10px; letter-spacing:.22em; color:var(--bone-dim); text-transform:uppercase;}
+  .clock-plaque .val{font-family:var(--font-mono); font-size:19px; font-weight:700; color:var(--bone); letter-spacing:.04em;}
+
+  /* ---- grid ---- */
+  .grid{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; align-items:stretch;
+    margin-top:20px;
+  }
+  @media(max-width:1180px){ .grid{grid-template-columns:repeat(2, 1fr);} }
+  @media(max-width:640px){ .grid{grid-template-columns:1fr;} }
+
+  .card{
+    background:
+      radial-gradient(ellipse 140% 60% at 50% 0%, var(--glow), transparent 55%),
+      repeating-linear-gradient(115deg, rgba(255,255,255,.012) 0px, rgba(255,255,255,.012) 1px, transparent 1px, transparent 3px),
+      linear-gradient(180deg, var(--panel-2), var(--stone) 65%, #0e0b09);
+    background-blend-mode:normal, overlay, normal;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:38px 20px 18px;
+    position:relative;
+    overflow:visible;
+    display:flex; flex-direction:column;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.04),
+      inset 0 0 40px rgba(0,0,0,.45),
+      0 18px 40px rgba(0,0,0,.35);
+    transition:box-shadow .4s ease, border-color .4s ease, transform .3s ease;
+  }
+  .card:hover{ transform:translateY(-3px); }
+  .card::before{
+    content:''; position:absolute; inset:0; padding:1px; border-radius:var(--radius);
+    background:linear-gradient(150deg, var(--accent), transparent 40%, transparent 60%, var(--accent) 145%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude;
+    opacity:.55; pointer-events:none;
+  }
+  .card::after{
+    content:''; position:absolute; top:14px; left:14px; right:14px; bottom:14px;
+    border:1px solid var(--line); border-radius:calc(var(--radius) - 6px);
+    opacity:.35; pointer-events:none;
+  }
+  .card.ust{--accent:var(--gold); --glow:var(--gold-glow);}
+  .card.alt{--accent:var(--rose); --glow:var(--rose-glow);}
+  .card.ghost{--accent:var(--spirit); --glow:var(--spirit-glow);}
+  .card.kizil{--accent:var(--danger); --glow:var(--danger-glow);}
+
+  .card-head{display:flex; align-items:flex-end; gap:16px; margin-bottom:16px;}
+  .titles{transform:translateY(-26px);}
+  .icon-wrap{
+    width:52px; height:52px; border-radius:11px; flex:none;
+    display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 50% 35%, var(--glow), transparent 72%);
+    border:1px solid var(--line-strong);
+  }
+  .icon-wrap svg{width:28px; height:28px; stroke:var(--accent); fill:none;}
+  .icon-wrap.stone-icon{
+    width:66px; height:112px; flex:none;
+    margin-top:-52px; margin-bottom:-6px;
+    border-radius:0; border:none; background:none;
+    position:relative;
+  }
+  .icon-wrap.stone-icon::after{
+    content:''; position:absolute; left:50%; bottom:2px; width:58px; height:12px;
+    transform:translateX(-50%); border-radius:50%;
+    background:radial-gradient(ellipse, rgba(0,0,0,.55), transparent 70%);
+    filter:blur(1px); pointer-events:none;
+  }
+  .icon-wrap.stone-icon img{
+    width:100%; height:100%; object-fit:contain; object-position:50% 0%;
+    filter:drop-shadow(0 10px 16px rgba(0,0,0,.65)) drop-shadow(0 0 22px var(--glow));
+    animation:stoneFloat 5s ease-in-out infinite;
+  }
+  @keyframes stoneFloat{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-4px); }
+  }
+  .ampul-corner-icon{
+    position:absolute;
+    top:-64px; right:20px;
+    margin:0;
+  }
+
+  .ampul-corner-icon{
+    position:absolute;
+    top:-46px; right:-40px;
+    width:156px; height:156px; object-fit:contain;
+    transform:scaleX(-1);
+    filter:drop-shadow(0 0 14px var(--glow));
+    z-index:3; pointer-events:none;
+  }
+  .titles .lv{
+    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.16em;
+    color:var(--accent); text-transform:uppercase; margin:0 0 3px;
+  }
+  .titles h2{
+    font-family:var(--font-display); font-size:15px; margin:0; font-weight:700;
+    color:var(--bone); line-height:1.15;
+  }
+
+  .mode-note{
+    font-size:13.5px; color:var(--bone-dim); line-height:1.55; margin:0 0 20px;
+    border-left:2px solid var(--line-strong); padding-left:12px;
+  }
+
+  .timer-plate{
+    position:relative; margin:4px auto 10px; padding:16px 14px 14px; width:100%;
+    border-radius:12px; flex:1; display:flex; align-items:center; justify-content:center;
+    min-height:78px; overflow:visible;
+    background:
+      radial-gradient(ellipse 80% 70% at 50% 40%, var(--glow), transparent 72%),
+      linear-gradient(180deg, rgba(0,0,0,.38), rgba(0,0,0,.16));
+    box-shadow:
+      inset 0 3px 10px rgba(0,0,0,.65),
+      inset 0 -1px 0 rgba(255,255,255,.03),
+      inset 0 0 0 1px var(--line),
+      0 0 22px var(--glow);
+  }
+  .timer{
+    font-family:var(--font-mono); font-weight:700; font-size:clamp(28px,4.4vw,38px);
+    letter-spacing:.03em; color:var(--accent); text-align:center;
+    line-height:1;
+    text-shadow:
+      0 0 1px rgba(0,0,0,.8),
+      0 1px 0 rgba(0,0,0,.6),
+      0 0 18px var(--glow),
+      0 0 40px var(--glow);
+    position:relative; z-index:1;
+    --growt:0;
+    transform:scale(calc(1 + var(--growt) * .55))
+              translateY(calc(var(--growt) * -8px));
+    transition:transform .25s ease;
+    will-change:transform;
+  }
+
+  .status-line{
+    text-align:center; font-size:12.5px; color:var(--bone-dim); min-height:16px; margin-bottom:10px;
+  }
+
+  .ch3-box{
+    margin-top:4px; padding-top:10px; border-top:1px dashed var(--line);
+  }
+  .ch3-top{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:8px 10px 8px 12px; border-radius:10px;
+    background:linear-gradient(90deg, var(--glow), transparent 65%);
+    border:1px solid var(--line);
+  }
+  .ch3-box .ch3-label{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; color:var(--bone-dim);
+    text-transform:uppercase;
+  }
+  .ch3-box .ch3-label strong{ color:var(--accent); }
+  .ch3-box .ch3-timer{
+    font-family:var(--font-mono); font-weight:700; font-size:19px; color:var(--accent);
+    text-shadow:0 0 16px var(--glow); min-width:52px; text-align:right;
+  }
+  .ch3-drop-btn{
+    flex:none;
+    font-family:var(--font-display); font-weight:700; font-size:14px; line-height:1;
+    width:26px; height:26px; display:flex; align-items:center; justify-content:center;
+    border-radius:999px; border:1px solid var(--accent);
+    background:radial-gradient(circle at 35% 30%, var(--glow), transparent 75%);
+    color:var(--accent); cursor:pointer; padding:0;
+    box-shadow:0 0 10px var(--glow);
+    transition:background .2s ease, color .2s ease, transform .1s ease;
+    white-space:nowrap;
+  }
+  .ch3-drop-btn:hover{ background:var(--accent); color:#100c09; }
+  .ch3-idea-icon{
+    display:block; margin:10px auto 0; width:60px; height:auto;
+    filter:drop-shadow(0 0 10px var(--glow));
+  }
+  .ch3-idea-icon-corner{
+    position:absolute;
+    left:-20px; bottom:-26px;
+    width:100px; height:100px; object-fit:contain;
+    z-index:3; pointer-events:none;
+    filter:drop-shadow(0 8px 14px rgba(0,0,0,.6)) drop-shadow(0 0 18px var(--glow));
+  }
+  .ch3-drop-btn:active{ transform:scale(.98); }
+
+  .recal-box{
+    margin-top:8px; padding-top:8px; border-top:1px dashed var(--line);
+  }
+  .recal-row{ display:flex; gap:8px; margin-bottom:8px; }
+  .recal-input{
+    flex:1 1 auto; min-width:0; background:var(--stone); border:1px solid var(--line-strong);
+    border-radius:8px; color:var(--bone); font-family:var(--font-mono); font-size:13px;
+    padding:8px 10px;
+  }
+  .recal-input:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .recal-btn, .recal-now-btn{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+    border-radius:8px; border:1px solid var(--accent); background:transparent; color:var(--accent);
+    cursor:pointer; padding:8px 12px; transition:background .2s ease, color .2s ease;
+    white-space:nowrap;
+  }
+  .recal-btn:hover, .recal-now-btn:hover{ background:var(--accent); color:#100c09; }
+  .recal-now-btn{ display:block; width:100%; padding:9px 12px; }
+  .recal-note{
+    font-size:10px; color:var(--bone-dim); margin:5px 0 0; text-align:center; opacity:.7; line-height:1.4;
+  }
+
+  .btn{
+    display:block; width:100%; padding:13px 18px; border-radius:8px; border:1px solid var(--accent);
+    background:transparent; color:var(--accent); font-family:var(--font-display); font-weight:700;
+    font-size:13px; letter-spacing:.09em; text-transform:uppercase; cursor:pointer;
+    transition:background .22s ease, color .22s ease, transform .1s ease;
+  }
+  .btn:hover{background:var(--accent); color:#100c09;}
+  .btn:active{transform:scale(.98);}
+  .btn:focus-visible{outline:2px solid var(--bone); outline-offset:2px;}
+
+  .chan-row{
+    display:flex; border:1px solid var(--line-strong); border-radius:10px;
+    overflow:hidden; margin-bottom:18px; background:var(--stone);
+  }
+  .chan-btn{
+    flex:1 1 0; min-width:0; border:none; border-right:1px solid var(--line);
+    background:transparent; color:var(--bone-dim); font-family:var(--font-mono); font-weight:700;
+    font-size:13px; padding:9px 2px 7px; cursor:pointer; display:flex; flex-direction:column;
+    align-items:center; gap:2px; line-height:1.05; position:relative;
+    transition:background .2s ease, color .2s ease, box-shadow .2s ease;
+  }
+  .chan-btn:last-child{ border-right:none; }
+  .chan-btn:hover{ background:rgba(255,255,255,.05); color:var(--bone); }
+  .chan-btn:focus-visible{ outline:2px solid var(--bone); outline-offset:-2px; }
+  .chan-btn .chan-time{ font-size:8.5px; letter-spacing:.01em; opacity:.9; display:none; }
+  .chan-btn.active{
+    color:var(--accent); background:linear-gradient(180deg, var(--glow), transparent 75%);
+    box-shadow:inset 0 -2px 0 var(--accent);
+  }
+  .chan-btn.active .chan-time{ display:block; }
+  .chan-btn.chan-warn .chan-time,
+  .chan-btn.chan-done .chan-time{ display:block; }
+  .chan-btn.chan-warn{
+    color:var(--danger); background:linear-gradient(180deg, var(--danger-glow), transparent 75%);
+    box-shadow:inset 0 -2px 0 var(--danger); animation:pulseChanBg 1s ease-in-out infinite;
+  }
+  .chan-btn.chan-done{
+    color:#fff2ee; background:var(--danger); box-shadow:0 0 20px var(--danger-glow), inset 0 -2px 0 rgba(255,255,255,.5);
+    animation:pulseChan .6s ease-in-out infinite;
+  }
+  @keyframes pulseChan{ 0%,100%{opacity:1;} 50%{opacity:.55;} }
+  @keyframes pulseChanBg{ 0%,100%{opacity:1;} 50%{opacity:.65;} }
+
+  .warn{
+    box-shadow:0 0 0 1px var(--danger), 0 0 34px var(--danger-glow) !important;
+    border-color:var(--danger) !important;
+    animation:pulseCard 1s ease-in-out infinite;
+  }
+  @keyframes pulseCard{ 0%,100%{box-shadow:0 0 0 1px var(--danger), 0 0 20px var(--danger-glow);} 50%{box-shadow:0 0 0 1px var(--danger), 0 0 44px var(--danger-glow);} }
+  .warn .timer{color:var(--danger) !important; text-shadow:0 0 1px rgba(0,0,0,.8), 0 1px 0 rgba(0,0,0,.6), 0 0 20px var(--danger-glow), 0 0 46px var(--danger-glow) !important; animation:pulseText .6s ease-in-out infinite;}
+  @keyframes pulseText{ 0%,100%{opacity:1;} 50%{opacity:.55;} }
+  .warn .timer-plate{ box-shadow:inset 0 3px 10px rgba(0,0,0,.65), inset 0 -1px 0 rgba(255,255,255,.03), inset 0 0 0 1px var(--danger), 0 0 30px var(--danger-glow); }
+
+  /* ---- spawn effects: burst + smoke, fired the instant a stone drops ---- */
+  .fx-layer{ position:absolute; inset:0; overflow:visible; pointer-events:none; z-index:5; }
+  .fx-flash{
+    position:absolute; left:50%; top:50%; width:14px; height:14px; border-radius:50%;
+    background:radial-gradient(circle, #fff 0%, var(--accent) 35%, transparent 72%);
+    transform:translate(-50%,-50%) scale(0); opacity:0;
+    animation:fxFlash .55s cubic-bezier(.15,.8,.3,1) forwards;
+  }
+  @keyframes fxFlash{
+    0%{ transform:translate(-50%,-50%) scale(0); opacity:1; }
+    40%{ transform:translate(-50%,-50%) scale(7); opacity:.9; }
+    100%{ transform:translate(-50%,-50%) scale(11); opacity:0; }
+  }
+  .fx-spark{
+    position:absolute; left:50%; top:50%; width:5px; height:5px; border-radius:50%;
+    background:var(--accent); box-shadow:0 0 8px 2px var(--glow);
+    transform:translate(-50%,-50%); opacity:0;
+    animation:fxSpark .75s ease-out forwards;
+  }
+  @keyframes fxSpark{
+    0%{ transform:translate(-50%,-50%) translate(0,0) scale(1); opacity:1; }
+    100%{ transform:translate(-50%,-50%) translate(var(--sx),var(--sy)) scale(.2); opacity:0; }
+  }
+  .fx-smoke{
+    position:absolute; left:50%; bottom:38%; width:30px; height:30px; border-radius:50%;
+    background:radial-gradient(circle, rgba(238,246,255,.5) 0%, rgba(238,246,255,.18) 45%, rgba(238,246,255,0) 72%);
+    transform:translate(-50%,0) scale(.6); opacity:0;
+    animation:fxSmoke 2.4s ease-out forwards;
+  }
+  @keyframes fxSmoke{
+    0%{ transform:translate(-50%,0) scale(.5); opacity:.55; }
+    100%{ transform:translate(calc(-50% + var(--smx)), -120px) scale(2.4); opacity:0; }
+  }
+
+  /* ---- toasts ---- */
+  .toast-wrap{
+    position:fixed; top:16px; right:16px; z-index:80; display:flex; flex-direction:column;
+    gap:10px; max-width:280px;
+  }
+  .toast{
+    background:var(--panel); border:1px solid var(--danger); border-radius:10px;
+    padding:13px 15px; box-shadow:0 10px 28px rgba(0,0,0,.55); animation:toastIn .3s ease;
+  }
+  .toast strong{
+    display:block; font-family:var(--font-display); font-size:13px; color:var(--danger); margin-bottom:2px;
+  }
+  .toast span{font-size:12.5px; color:var(--bone-dim);}
+  @keyframes toastIn{from{opacity:0; transform:translateX(24px);} to{opacity:1; transform:translateX(0);}}
+  @media(max-width:480px){ .toast-wrap{left:12px; right:12px; max-width:none;} }
+
+  /* ---- confirm modal ---- */
+  .modal-backdrop{
+    position:fixed; inset:0; z-index:90; background:rgba(6,4,3,.72);
+    display:none; align-items:center; justify-content:center; padding:20px;
+    backdrop-filter:blur(2px);
+  }
+  .modal-backdrop.open{ display:flex; }
+  .modal-box{
+    width:100%; max-width:380px; background:linear-gradient(180deg, var(--panel-2), var(--stone));
+    border:1px solid var(--line-strong); border-radius:16px; padding:26px 22px 20px;
+    text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.6);
+    animation:toastIn .2s ease;
+  }
+  .modal-box h3{
+    font-family:var(--font-display); color:var(--bone); font-size:20px; margin:0 0 10px;
+  }
+  .modal-box p{
+    font-size:14.5px; color:var(--bone-dim); line-height:1.55; margin:0 0 22px;
+  }
+  .modal-actions{ display:flex; gap:12px; }
+  .modal-btn{
+    flex:1; padding:12px 10px; border-radius:9px; font-family:var(--font-display);
+    font-weight:700; font-size:13px; letter-spacing:.06em; text-transform:uppercase;
+    cursor:pointer; transition:background .2s ease, color .2s ease, transform .1s ease;
+  }
+  .modal-btn:active{ transform:scale(.97); }
+  .modal-btn.cancel{
+    border:1px solid var(--line-strong); background:transparent; color:var(--bone-dim);
+  }
+  .modal-btn.cancel:hover{ border-color:var(--bone-dim); color:var(--bone); }
+  .modal-btn.confirm{
+    border:1px solid var(--danger); background:transparent; color:var(--danger);
+  }
+  .modal-btn.confirm:hover{ background:var(--danger); color:#fff2ee; }
+
+  footer{
+    text-align:center; margin-top:26px; display:flex; align-items:center; justify-content:center; gap:18px;
+    flex-wrap:wrap;
+  }
+  .sound-toggle{
+    display:inline-flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:12px;
+    color:var(--bone-dim); background:none; border:1px solid var(--line-strong); border-radius:999px;
+    padding:9px 18px; cursor:pointer; letter-spacing:.05em;
+  }
+  .sound-toggle:hover{border-color:var(--bone-dim); color:var(--bone);}
+  .note{font-size:12px; color:#54688f; max-width:560px; margin:20px auto 0; line-height:1.65; text-align:center;}
+
+  @media (prefers-reduced-motion: reduce){
+    .ember{animation:none; display:none;}
+    .warn, .warn .timer{animation:none;}
+    .timer{transition:none; transform:none !important;}
+    .fx-flash, .fx-spark, .fx-smoke{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="embers" id="embers"></div>
+<div class="toast-wrap" id="toastWrap"></div>
+
+<div class="modal-backdrop" id="confirmModal">
+  <div class="modal-box">
+    <h3 id="confirmTitle">Kanalı yeniden kes?</h3>
+    <p id="confirmText"></p>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" id="confirmCancel">Vazgeç</button>
+      <button class="modal-btn confirm" id="confirmOk">Evet, kes</button>
+    </div>
+  </div>
+</div>
+
+<main>
+  <header>
+    <p class="eyebrow">Devler Vadisi</p>
+    <h1>Metin Taşları</h1>
+    <p class="subhead">Taşların çıkış anlarını izle, kaçırma.</p>
+    <div class="clock-plaque">
+      <span class="lbl">Şu an</span>
+      <span class="val" id="liveClock">--:--:--</span>
+    </div>
+  </header>
+
+  <div class="grid">
+
+    <section class="card ust" id="cardUst">
+      <div class="card-head">
+        <div class="icon-wrap stone-icon"><img src="https://res.cloudinary.com/dxbsrlgaf/image/upload/v1788007001/download_egrvgs.png" alt="Devler Üst Taraf"></div>
+        <div class="titles">
+          <p class="lv">Seviye 75 · Sabit döngü</p>
+          <h2>Devler — Üst</h2>
+        </div>
+      </div>
+      <div class="timer-plate"><div class="timer" id="ustTimer">--:--</div><div class="fx-layer" id="ustFx"></div></div>
+      <p class="status-line" id="ustStatus">sonraki çıkışa kalan süre</p>
+      <div class="recal-box">
+        <button class="recal-now-btn" id="ustRecalNowBtn" type="button">🔻 Şimdi Düştü</button>
+        <p class="recal-note">Taş düştüğünde "Şimdi Düştü"ya bas — sayaç oradan itibaren yeniden hesaplanır ve kalıcı olarak kaydedilir.</p>
+      </div>
+      <div class="ch3-box">
+        <div class="ch3-top">
+          <span class="ch3-label"><strong>CH3</strong></span>
+          <button class="ch3-drop-btn" id="ustCh3DropBtn" type="button">▼</button>
+          <span class="ch3-timer" id="ustCh3Timer">--:--</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card alt" id="cardAlt">
+      <div class="card-head">
+        <div class="icon-wrap stone-icon"><img src="https://res.cloudinary.com/dxbsrlgaf/image/upload/v1788007001/download_1_tcbgyh.png" alt="Devler Alt Taraf"></div>
+        <div class="titles">
+          <p class="lv">Sabit döngü · 62 dakika</p>
+          <h2>Devler — Alt</h2>
+        </div>
+      </div>
+      <div class="timer-plate"><div class="timer" id="altTimer">--:--</div><div class="fx-layer" id="altFx"></div></div>
+      <p class="status-line" id="altStatus">sonraki çıkışa kalan süre</p>
+      <div class="recal-box">
+        <button class="recal-now-btn" id="altRecalNowBtn" type="button">🔻 Şimdi Düştü</button>
+        <p class="recal-note">Taş düştüğünde "Şimdi Düştü"ya bas — sayaç oradan itibaren yeniden hesaplanır ve kalıcı olarak kaydedilir.</p>
+      </div>
+      <div class="ch3-box">
+        <div class="ch3-top">
+          <span class="ch3-label"><strong>CH3</strong></span>
+          <button class="ch3-drop-btn" id="altCh3DropBtn" type="button">▼</button>
+          <span class="ch3-timer" id="altCh3Timer">--:--</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card ghost" id="cardGhost">
+      <div class="card-head">
+        <div class="icon-wrap stone-icon"><img src="https://res.cloudinary.com/dxbsrlgaf/image/upload/v1788007001/download_1_tcbgyh.png" alt="Hayalet Orman"></div>
+        <div class="titles">
+          <p class="lv">Dinamik · Kesime bağlı</p>
+          <h2>Hayalet Orman</h2>
+        </div>
+      </div>
+      <div class="timer-plate"><div class="timer" id="ghostTimer">--:--</div><div class="fx-layer" id="ghostFx"></div></div>
+      <p class="status-line" id="ghostStatus">sonraki çıkışa kalan süre</p>
+      <div class="recal-box">
+        <button class="recal-now-btn" id="ghostRecalNowBtn" type="button">🔻 Şimdi Düştü</button>
+        <p class="recal-note">Taş düştüğünde "Şimdi Düştü"ya bas — sayaç oradan itibaren yeniden hesaplanır ve kalıcı olarak kaydedilir.</p>
+      </div>
+      <div class="ch3-box">
+        <div class="ch3-top">
+          <span class="ch3-label"><strong>CH3</strong></span>
+          <button class="ch3-drop-btn" id="ghostCh3DropBtn" type="button">▼</button>
+          <span class="ch3-timer" id="ghostCh3Timer">--:--</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card kizil" id="cardKizil">
+      <div class="card-head">
+        <div class="icon-wrap stone-icon"><img src="https://res.cloudinary.com/dxbsrlgaf/image/upload/v1788007001/download_2_ulox4o.png" alt="Kızıl Orman"></div>
+        <div class="titles" style="margin-left:-28px;">
+          <p class="lv">Dinamik · Kesime bağlı</p>
+          <h2>Kızıl Orman</h2>
+        </div>
+      </div>
+      <img class="ampul-corner-icon" src="https://res.cloudinary.com/dxbsrlgaf/image/upload/v1788007571/pngtree-light-bulb-with-ideas-and-question-marks-inside-glowing-on-black-png-image_18917917-Photoroom_dqhaeq.png" alt="Ampul">
+      <div class="timer-plate"><div class="timer" id="kizilTimer">--:--</div><div class="fx-layer" id="kizilFx"></div></div>
+      <p class="status-line" id="kizilStatus">sonraki çıkışa kalan süre</p>
+      <div class="recal-box">
+        <button class="recal-now-btn" id="kizilRecalNowBtn" type="button">🔻 Şimdi Düştü</button>
+        <p class="recal-note">Taş düştüğünde "Şimdi Düştü"ya bas — sayaç oradan itibaren yeniden hesaplanır ve kalıcı olarak kaydedilir.</p>
+      </div>
+      <div class="ch3-box">
+        <div class="ch3-top">
+          <span class="ch3-label"><strong>CH3</strong></span>
+          <button class="ch3-drop-btn" id="kizilCh3DropBtn" type="button">▼</button>
+          <span class="ch3-timer" id="kizilCh3Timer">--:--</span>
+        </div>
+        <div class="ch3-top" style="margin-top:10px;">
+          <span class="ch3-label"><strong>AMPUL</strong></span>
+          <button class="ch3-drop-btn" id="kizilAmpulDropBtn" type="button">▼</button>
+          <span class="ch3-timer" id="kizilAmpulTimer">--:--</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <button class="sound-toggle" id="soundToggle">🔊 Ses açık</button>
+  </footer>
+</main>
+
+<!-- Herkeste aynı ankoru göstermek için: Firebase Realtime Database (ücretsiz) -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+
+<script>
+/* ================================================================
+   PAYLAŞILAN VERİ (FIREBASE) — herkes aynı zamanlayıcıyı görsün diye
+   ================================================================
+   1) https://console.firebase.google.com adresinden ücretsiz bir
+      proje aç, "Realtime Database" özelliğini ekle (test modunda).
+   2) Proje ayarları > "Web uygulaması ekle" diyip sana verilen
+      firebaseConfig nesnesini aşağıya, olduğu gibi yapıştır.
+   3) Realtime Database > Rules kısmına şunu yazıp yayınla
+      (küçük bir arkadaş grubu için sorun değil, ama linki
+      dışarıyla paylaşırsan herkes düzenleyebilir):
+      { "rules": { ".read": true, ".write": true } }
+   Bu alanları doldurmazsan site yine çalışır, ama her cihaz
+   kendi ankorunu (localStorage) kullanır, ortak olmaz.
+================================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyAIvCYxv6YywrEtMFHPGjYpKlIhvREo0Bk",
+  authDomain: "metin2-23268.firebaseapp.com",
+  databaseURL: "https://metin2-23268-default-rtdb.firebaseio.com",
+  projectId: "metin2-23268"
+};
+
+let fbDb = null;
+let fbReady = false;
+(function initFirebase(){
+  try{
+    if(typeof firebase === 'undefined' || firebaseConfig.apiKey.indexOf('BURAYA') !== -1){
+      return;
+    }
+    firebase.initializeApp(firebaseConfig);
+    fbDb = firebase.database();
+    fbDb.ref('.info/connected').on('value', (snap)=>{
+      fbReady = !!snap.val();
+    });
+  }catch(e){
+    console.warn('Firebase başlatılamadı, sadece bu cihazda çalışacak:', e);
+  }
+})();
+
+function fbRef(key){
+  return fbDb ? fbDb.ref('ankorlar/' + key) : null;
+}
+
+/* Paylaşılan ankor her değiştiğinde (biri "Şimdi Düştü" dediğinde ya
+   da biz uykudan uyanıp sayfayı yeniden açtığımızda) çağrılır. */
+function watchAnchor(key, onChange){
+  const ref = fbRef(key);
+  if(!ref) return;
+  ref.on('value', (snap)=>{
+    const val = snap.val();
+    if(val){
+      const d = new Date(val);
+      if(!isNaN(d.getTime())) onChange(d);
+    }
+  });
+}
+
+/* Yeni ankoru hem bu cihaza (hızlı açılış için) hem de paylaşılan
+   veritabanına (herkes görsün diye) yazar. */
+function saveAnchor(key, date){
+  try{ localStorage.setItem(key, date.toISOString()); }catch(e){}
+  const ref = fbRef(key);
+  if(ref) ref.set(date.toISOString()).catch(e=>console.warn('Firebase yazma hatası:', e));
+}
+
+/* ---------- snowfall particles ---------- */
+(function(){
+  const wrap = document.getElementById('embers');
+  const n = 26;
+  for(let i=0;i<n;i++){
+    const e = document.createElement('div');
+    e.className='ember';
+    const depth = Math.random();
+    const size = 2 + depth*4;
+    const left = Math.random()*100;
+    const dur = 9 + (1-depth)*14;
+    const delay = Math.random()*16;
+    const drift = (Math.random()*80-40)+'px';
+    e.style.left = left+'vw';
+    e.style.width = size+'px';
+    e.style.height = size+'px';
+    e.style.opacity = 0.3 + depth*0.55;
+    e.style.animationDuration = dur+'s';
+    e.style.animationDelay = '-'+delay+'s';
+    e.style.setProperty('--drift', drift);
+    wrap.appendChild(e);
+  }
+})();
+
+/* ---------- live clock ---------- */
+function pad(n){ return String(n).padStart(2,'0'); }
+function tickClock(){
+  const now = new Date();
+  document.getElementById('liveClock').textContent =
+    pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
+}
+setInterval(tickClock,1000); tickClock();
+
+/* ---------- sound ---------- */
+let soundOn = true;
+let audioCtx = null;
+function ensureCtx(){
+  if(!audioCtx){ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }
+  if(audioCtx.state==='suspended'){ audioCtx.resume(); }
+  return audioCtx;
+}
+function beep(freq=880, dur=0.15, type='sine', vol=0.22, when=0){
+  if(!soundOn) return;
+  const ctx = ensureCtx();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type;
+  osc.frequency.value = freq;
+  gain.gain.value = 0;
+  osc.connect(gain); gain.connect(ctx.destination);
+  const t0 = ctx.currentTime + when;
+  gain.gain.linearRampToValueAtTime(vol, t0+0.01);
+  gain.gain.exponentialRampToValueAtTime(0.001, t0+dur);
+  osc.start(t0);
+  osc.stop(t0+dur+0.02);
+}
+function warningBeep(){ beep(720,0.12,'triangle',0.2); }
+function spawnFanfare(){
+  beep(523.25,0.14,'sine',0.25,0);
+  beep(659.25,0.14,'sine',0.25,0.14);
+  beep(783.99,0.22,'sine',0.28,0.28);
+}
+document.getElementById('soundToggle').addEventListener('click', function(){
+  soundOn = !soundOn;
+  this.textContent = soundOn ? '🔊 Ses açık' : '🔇 Ses kapalı';
+  if(soundOn) ensureCtx();
+});
+
+/* ---------- toast + tarayıcı bildirimi ---------- */
+function ensureNotifyPermission(){
+  if('Notification' in window && Notification.permission==='default'){
+    Notification.requestPermission();
+  }
+}
+function showToast(title, body){
+  const wrap = document.getElementById('toastWrap');
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.innerHTML = '<strong>'+title+'</strong><span>'+body+'</span>';
+  wrap.appendChild(el);
+  setTimeout(()=>{ el.style.transition='opacity .4s ease'; el.style.opacity='0'; setTimeout(()=>el.remove(),400); }, 6500);
+}
+function notify(title, body){
+  showToast(title, body);
+  if('Notification' in window && Notification.permission==='granted'){
+    try{ new Notification(title, {body}); }catch(e){}
+  }
+}
+
+function fmt(totalSeconds){
+  const s = Math.max(0, Math.round(totalSeconds));
+  const h = Math.floor(s/3600);
+  const m = Math.floor((s%3600)/60);
+  const sec = s%60;
+  if(h>0) return pad(h)+':'+pad(m)+':'+pad(sec);
+  return pad(m)+':'+pad(sec);
+}
+
+function fmtClock(d){
+  return d.toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+}
+
+/* ---------- taş düştüğünde: ışık patlaması + duman ---------- */
+function spawnStoneEffects(fxEl){
+  if(!fxEl) return;
+
+  const flash = document.createElement('div');
+  flash.className = 'fx-flash';
+  fxEl.appendChild(flash);
+  setTimeout(()=>flash.remove(), 600);
+
+  const sparkCount = 8;
+  for(let i=0;i<sparkCount;i++){
+    const s = document.createElement('div');
+    s.className = 'fx-spark';
+    const angle = (Math.PI*2*i/sparkCount) + Math.random()*0.4;
+    const dist = 46 + Math.random()*54;
+    s.style.setProperty('--sx', (Math.cos(angle)*dist).toFixed(1)+'px');
+    s.style.setProperty('--sy', (Math.sin(angle)*dist).toFixed(1)+'px');
+    s.style.animationDelay = (Math.random()*0.06)+'s';
+    fxEl.appendChild(s);
+    setTimeout(()=>s.remove(), 850);
+  }
+
+  const smokeCount = 3;
+  for(let i=0;i<smokeCount;i++){
+    const p = document.createElement('div');
+    p.className = 'fx-smoke';
+    p.style.setProperty('--smx', ((Math.random()*70-35)).toFixed(1)+'px');
+    p.style.animationDelay = (Math.random()*0.5)+'s';
+    p.style.left = (50 + (Math.random()*30-15)) + '%';
+    fxEl.appendChild(p);
+    setTimeout(()=>p.remove(), 3000);
+  }
+}
+
+/* ---------- Genel taş zamanlayıcı: ankor + "Şimdi Düştü" ---------- */
+function makeStoneTimer({ key, intervalSec, jitterMaxSec, defaultAnchor, label, timerEl, statusEl, cardEl, btnEl, fxEl }){
+  function loadAnchor(){
+    const saved = localStorage.getItem(key);
+    if(saved){
+      const d = new Date(saved);
+      if(!isNaN(d.getTime())) return d;
+    }
+    return defaultAnchor();
+  }
+  let anchor = loadAnchor();
+  let warned = false;
+  let randomWarned = false;
+  let warned30 = false;
+  let warned10 = false;
+  let lastDiff = null;
+
+  /* Paylaşılan veritabanında bu ankor değişirse (başka biri düştü
+     dediyse, ya da biz uyurken düşmüşse) burada haber alırız. */
+  watchAnchor(key, function(remoteAnchor){
+    anchor = remoteAnchor;
+    warned = false;
+    randomWarned = false;
+    warned30 = false;
+    warned10 = false;
+    lastDiff = null;
+    if(cardEl) cardEl.classList.remove('warn');
+    if(timerEl) timerEl.style.setProperty('--growt', '0');
+    tick();
+  });
+
+  function nextTarget(now){
+    const intervalMs = intervalSec * 1000;
+    let diff = now.getTime() - anchor.getTime();
+    let remainder = diff % intervalMs;
+    if(remainder < 0) remainder += intervalMs;
+    return new Date(now.getTime() + (intervalMs - remainder));
+  }
+
+  function tick(){
+    const now = new Date();
+    const diff = (nextTarget(now).getTime() - now.getTime()) / 1000;
+    timerEl.textContent = fmt(diff);
+
+    /* son 10 saniye: metin yukarı doğru büyür */
+    const growT = (diff > 0 && diff <= 10) ? (10 - diff) / 10 : 0;
+    timerEl.style.setProperty('--growt', growT.toFixed(3));
+
+    /* taş tam düştüğü an: patlama + duman */
+    if(lastDiff !== null && lastDiff <= 2 && diff > lastDiff + 5){
+      spawnStoneEffects(fxEl);
+    }
+    lastDiff = diff;
+
+    /* son 30 saniye ve son 10 saniye: ayrı uyarılar (ses + bildirim) */
+    if(diff <= 30 && diff > 0 && !warned30){
+      warned30 = true;
+      warningBeep();
+      notify(label, '30 saniye kaldı');
+    }
+    if(diff <= 10 && diff > 0 && !warned10){
+      warned10 = true;
+      warningBeep();
+      notify(label, '10 saniye kaldı');
+    }
+
+    if(jitterMaxSec && diff <= jitterMaxSec && diff > 0){
+      cardEl.classList.add('warn');
+      statusEl.textContent = 'RANDOM — bu ' + jitterMaxSec + ' saniye içinde her an düşebilir';
+      if(!randomWarned){ randomWarned = true; warningBeep(); }
+      warned = false;
+    } else if(diff <= 15 && diff > 0){
+      cardEl.classList.add('warn');
+      statusEl.textContent = 'çok yakında çıkıyor';
+      if(!warned){ warned = true; warningBeep(); }
+      randomWarned = false;
+    } else if(diff <= 0){
+      cardEl.classList.remove('warn');
+      statusEl.textContent = 'şimdi çıkıyor olmalı';
+      randomWarned = false;
+    } else {
+      cardEl.classList.remove('warn');
+      statusEl.textContent = 'sonraki çıkışa kalan süre';
+      warned = false;
+      randomWarned = false;
+      warned30 = false;
+      warned10 = false;
+    }
+  }
+  setInterval(tick, 1000); tick();
+
+  if(btnEl){
+    btnEl.addEventListener('click', ()=>{
+      ensureCtx();
+      anchor = new Date();
+      saveAnchor(key, anchor);
+      warned = false;
+      randomWarned = false;
+      warned30 = false;
+      warned10 = false;
+      lastDiff = null;
+      cardEl.classList.remove('warn');
+      timerEl.style.setProperty('--growt', '0');
+      spawnStoneEffects(fxEl);
+      tick();
+      spawnFanfare();
+    });
+  }
+
+  return { tick };
+}
+
+/* ---------- CH3 alt zamanlayıcısı: bağımsız ankor + kendi Şimdi Düştü butonu ---------- */
+function makeCh3Timer({ key, intervalSec, defaultAnchor, label, timerEl, btnEl }){
+  function loadAnchor(){
+    const saved = localStorage.getItem(key);
+    if(saved){
+      const d = new Date(saved);
+      if(!isNaN(d.getTime())) return d;
+    }
+    return defaultAnchor();
+  }
+  let anchor = loadAnchor();
+  let warned30 = false;
+  let warned10 = false;
+  let lastDiff = null;
+
+  /* Paylaşılan veritabanında bu ankor değişirse burada haber alırız. */
+  watchAnchor(key, function(remoteAnchor){
+    anchor = remoteAnchor;
+    warned30 = false;
+    warned10 = false;
+    lastDiff = null;
+    tick();
+  });
+
+  function nextTarget(now){
+    const intervalMs = intervalSec * 1000;
+    let diff = now.getTime() - anchor.getTime();
+    let remainder = diff % intervalMs;
+    if(remainder < 0) remainder += intervalMs;
+    return new Date(now.getTime() + (intervalMs - remainder));
+  }
+
+  function tick(){
+    const now = new Date();
+    const diff = (nextTarget(now).getTime() - now.getTime()) / 1000;
+    timerEl.textContent = fmt(diff);
+
+    /* döngü yeniden başladıysa (taş düşüp süre sıfırlandıysa) uyarı bayraklarını sıfırla */
+    if(lastDiff !== null && lastDiff <= 2 && diff > lastDiff + 5){
+      warned30 = false;
+      warned10 = false;
+    }
+    lastDiff = diff;
+
+    /* son 30 saniye ve son 10 saniye: ayrı uyarılar (ses + bildirim) */
+    if(diff <= 30 && diff > 0 && !warned30){
+      warned30 = true;
+      warningBeep();
+      notify(label, '30 saniye kaldı');
+    }
+    if(diff <= 10 && diff > 0 && !warned10){
+      warned10 = true;
+      warningBeep();
+      notify(label, '10 saniye kaldı');
+    }
+  }
+  setInterval(tick, 1000); tick();
+
+  if(btnEl){
+    btnEl.addEventListener('click', ()=>{
+      ensureCtx();
+      anchor = new Date();
+      saveAnchor(key, anchor);
+      warned30 = false;
+      warned10 = false;
+      lastDiff = null;
+      tick();
+      spawnFanfare();
+    });
+  }
+
+  return { tick };
+}
+
+/* ---------- onay penceresi (yanlışlıkla tıklamayı önler) ---------- */
+const confirmModal = document.getElementById('confirmModal');
+const confirmTitle = document.getElementById('confirmTitle');
+const confirmText = document.getElementById('confirmText');
+const confirmOkBtn = document.getElementById('confirmOk');
+const confirmCancelBtn = document.getElementById('confirmCancel');
+let confirmResolver = null;
+
+function askConfirm(title, text){
+  confirmTitle.textContent = title;
+  confirmText.textContent = text;
+  confirmModal.classList.add('open');
+  return new Promise(resolve=>{ confirmResolver = resolve; });
+}
+function closeConfirm(result){
+  confirmModal.classList.remove('open');
+  if(confirmResolver){ confirmResolver(result); confirmResolver = null; }
+}
+confirmOkBtn.addEventListener('click', ()=> closeConfirm(true));
+confirmCancelBtn.addEventListener('click', ()=> closeConfirm(false));
+confirmModal.addEventListener('click', (e)=>{ if(e.target===confirmModal) closeConfirm(false); });
+document.addEventListener('keydown', (e)=>{
+  if(confirmModal.classList.contains('open') && e.key==='Escape') closeConfirm(false);
+});
+
+/* ---------- DEVLER ÜST : saatlik döngü, kalıcı ankor + Şimdi Düştü ---------- */
+makeStoneTimer({
+  key: 'ustAnchor_v1',
+  intervalSec: 3600,
+  defaultAnchor: function(){
+    const t = new Date();
+    t.setSeconds(0,0);
+    t.setMinutes(28);
+    if(t.getTime() > Date.now()){ t.setHours(t.getHours()-1); }
+    return t;
+  },
+  label: 'Devler üst taraf',
+  timerEl: document.getElementById('ustTimer'),
+  statusEl: document.getElementById('ustStatus'),
+  cardEl: document.getElementById('cardUst'),
+  btnEl: document.getElementById('ustRecalNowBtn'),
+  fxEl: document.getElementById('ustFx')
+});
+
+/* ---------- DEVLER ÜST : CH3, saatlik döngü, kalıcı ankor + kendi Şimdi Düştü ---------- */
+makeCh3Timer({
+  key: 'ustCh3Anchor_v1',
+  intervalSec: 3600,
+  defaultAnchor: function(){
+    const t = new Date();
+    t.setSeconds(0,0);
+    t.setMinutes(28);
+    if(t.getTime() > Date.now()){ t.setHours(t.getHours()-1); }
+    return t;
+  },
+  label: 'Devler üst taraf',
+  timerEl: document.getElementById('ustCh3Timer'),
+  btnEl: document.getElementById('ustCh3DropBtn')
+});
+
+/* ---------- DEVLER ALT TARAF : 62 dakikalık döngü, +0-130sn sapma, kalıcı ankor + Şimdi Düştü ---------- */
+makeStoneTimer({
+  key: 'devlerAltAnchor_v1',
+  intervalSec: 62 * 60,
+  jitterMaxSec: 130,
+  defaultAnchor: function(){
+    return new Date('2026-08-28T14:39:50');
+  },
+  label: 'Devler alt taraf',
+  timerEl: document.getElementById('altTimer'),
+  statusEl: document.getElementById('altStatus'),
+  cardEl: document.getElementById('cardAlt'),
+  btnEl: document.getElementById('altRecalNowBtn'),
+  fxEl: document.getElementById('altFx')
+});
+
+/* ---------- DEVLER ALT : CH3, 11:05'ten itibaren 62 dakikalık döngü, kalıcı ankor + kendi Şimdi Düştü ---------- */
+makeCh3Timer({
+  key: 'altCh3Anchor_v1',
+  intervalSec: 62 * 60,
+  defaultAnchor: function(){
+    return new Date('2026-08-26T11:04:58.850');
+  },
+  label: 'Devler alt taraf',
+  timerEl: document.getElementById('altCh3Timer'),
+  btnEl: document.getElementById('altCh3DropBtn')
+});
+
+/* ---------- HAYALET ORMAN : kestiğinde 1 saat sonra tekrar çıkar, kalıcı ankor + Şimdi Düştü ---------- */
+makeStoneTimer({
+  key: 'ghostAnchor_v1',
+  intervalSec: 3600,
+  defaultAnchor: function(){
+    return new Date('2026-08-28T14:39:50');
+  },
+  label: 'Hayalet orman',
+  timerEl: document.getElementById('ghostTimer'),
+  statusEl: document.getElementById('ghostStatus'),
+  cardEl: document.getElementById('cardGhost'),
+  btnEl: document.getElementById('ghostRecalNowBtn'),
+  fxEl: document.getElementById('ghostFx')
+});
+
+
+/* ---------- HAYALET ORMAN : CH3, saatlik döngü, kalıcı ankor + kendi Şimdi Düştü ---------- */
+makeCh3Timer({
+  key: 'ghostCh3Anchor_v1',
+  intervalSec: 3600,
+  defaultAnchor: function(){
+    return new Date('2026-08-28T14:39:50');
+  },
+  label: 'Hayalet orman',
+  timerEl: document.getElementById('ghostCh3Timer'),
+  btnEl: document.getElementById('ghostCh3DropBtn')
+});
+
+/* ---------- KIZIL ORMAN : kestiğinde 1 saat sonra tekrar çıkar, kalıcı ankor + Şimdi Düştü ---------- */
+makeStoneTimer({
+  key: 'kizilAnchor_v1',
+  intervalSec: 60 * 60,
+  defaultAnchor: function(){
+    return new Date('2026-08-28T14:39:50');
+  },
+  label: 'Kızıl orman',
+  timerEl: document.getElementById('kizilTimer'),
+  statusEl: document.getElementById('kizilStatus'),
+  cardEl: document.getElementById('cardKizil'),
+  btnEl: document.getElementById('kizilRecalNowBtn'),
+  fxEl: document.getElementById('kizilFx')
+});
+
+/* ---------- KIZIL ORMAN : CH3, 1 saatlik döngü, kalıcı ankor + kendi Şimdi Düştü ---------- */
+makeCh3Timer({
+  key: 'kizilCh3Anchor_v1',
+  intervalSec: 3600 + 2*60 + 30,
+  defaultAnchor: function(){
+    return new Date('2026-08-28T14:39:50');
+  },
+  label: 'Kızıl orman',
+  timerEl: document.getElementById('kizilCh3Timer'),
+  btnEl: document.getElementById('kizilCh3DropBtn')
+});
+
+/* ---------- KIZIL ORMAN CH3 : Ampul zamanlayıcısı, 1 saatlik döngü, kendi Şimdi Başladı ---------- */
+makeCh3Timer({
+  key: 'kizilAmpulAnchor_v1',
+  intervalSec: 3600,
+  defaultAnchor: function(){
+    return new Date();
+  },
+  label: 'Kızıl orman ampul',
+  timerEl: document.getElementById('kizilAmpulTimer'),
+  btnEl: document.getElementById('kizilAmpulDropBtn')
+});
+</script>
+</body>
+</html>
